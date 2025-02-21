@@ -10,7 +10,7 @@ export function RolePage() {
       try {
         const userId = localStorage.getItem("userId");
 
-        const response = await fetch('http://localhost:5002/roles', {
+        const response = await fetch('https://ssobackend.onrender.com/roles', {
           method: 'POST', // Change to GET if your backend expects query params instead
           headers: {
             'Content-Type': 'application/json'

@@ -27,7 +27,7 @@ export default function AdminPage() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('http://localhost:5002/users');
+      const response = await fetch('https://ssobackend.onrender.com/users');
       if (!response.ok) throw new Error('Failed to fetch users');
       const data = await response.json();
       setUsers(data);
@@ -38,7 +38,7 @@ export default function AdminPage() {
 
   const fetchRoles = async () => {
     try {
-      const response = await fetch('http://localhost:5002/roles');
+      const response = await fetch('https://ssobackend.onrender.com/roles');
       if (!response.ok) throw new Error('Failed to fetch roles');
       const data = await response.json();
       setRoles(data);
@@ -49,7 +49,7 @@ export default function AdminPage() {
 
   const createUser = async () => {
     try {
-      await fetch('http://localhost:5002/users', {
+      await fetch('https://ssobackend.onrender.com/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: newUserName, password: newUserPassword }),
@@ -62,7 +62,7 @@ export default function AdminPage() {
 
   const createRole = async () => {
     try {
-      await fetch('http://localhost:5002/roles', {
+      await fetch('https://ssobackend.onrender.com/roles', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: roleName, url: roleUrl }),
@@ -75,7 +75,7 @@ export default function AdminPage() {
 
   const addRoleToUser = async (userId) => {
     try {
-      await fetch(`http://localhost:5002/users/${userId}/roles`, {
+      await fetch(`https://ssobackend.onrender.com/users/${userId}/roles`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ roleId: selectedRoleId }),
@@ -88,7 +88,7 @@ export default function AdminPage() {
 
   const removeRoleFromUser = async (userId, roleId) => {
     try {
-      await fetch(`http://localhost:5002/users/${userId}/roles`, {
+      await fetch(`https://ssobackend.onrender.com/users/${userId}/roles`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ roleId }),
