@@ -8,7 +8,16 @@ export function RolePage() {
   useEffect(() => {
     const fetchRoles = async () => {
       try {
-        const response = await fetch('http://localhost:5002/roles');
+        const userId = localStorage.getItem("userId");
+
+        const response = await fetch('http://localhost:5002/roles', {
+          method: 'POST', // Change to GET if your backend expects query params instead
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ userId })
+        });
+        
         if (!response.ok) throw new Error('Failed to fetch roles');
         const data = await response.json();
         setRoles(data);
@@ -21,11 +30,10 @@ export function RolePage() {
   }, []);
 
   const handleRoleClick = (role) => {
-    alert(role.name);
-    window.location.href = role.url;
-    localStorage.setItem('role', role.name);
+    const urlWithParams = `${role.url}?role=${encodeURIComponent(role.name)}`;
+    window.location.href = urlWithParams;
   };
-
+  
   if (!user) {
     return <p>User not found. Please login again.</p>;
   }

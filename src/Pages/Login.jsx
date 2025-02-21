@@ -5,7 +5,7 @@ export default function LoginPage() {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const [error,setErrorMessage]= useState("");
+  const [error, setErrorMessage] = useState('');
 
   const handleLogin = async () => {
     try {
@@ -14,16 +14,17 @@ export default function LoginPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, password }),
       });
-  
+
       const data = await response.json();
-  
+
       if (!response.ok) {
         throw new Error(data.message || 'Login failed');
       }
-  
+
       const user = data.user;
       localStorage.setItem('user', JSON.stringify(user));
-  
+      localStorage.setItem('userId', user._id);
+
       // Safe check before accessing roles
       if (user && user.roles && user.roles.some(role => role.name === 'admin')) {
         localStorage.setItem('admin', JSON.stringify(user));
@@ -35,7 +36,7 @@ export default function LoginPage() {
       setErrorMessage(error.message);
     }
   };
-  
+
   return (
     <div style={styles.container}>
       <div style={styles.card}>
@@ -43,14 +44,17 @@ export default function LoginPage() {
         <input
           style={styles.input}
           placeholder="Username"
+          value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <input
           style={styles.input}
           type="password"
           placeholder="Password"
+          value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        {error && <p style={styles.error}>{error}</p>} {/* Display error message */}
         <button style={styles.button} onClick={handleLogin}>
           Login
         </button>
@@ -87,6 +91,11 @@ const styles = {
     border: '1px solid #ccc',
     fontSize: '16px',
   },
+  error: {
+    color: 'red',
+    fontSize: '14px',
+    marginBottom: '10px',
+  },
   button: {
     width: '100%',
     padding: '10px',
@@ -95,19 +104,6 @@ const styles = {
     backgroundColor: '#007BFF',
     color: 'white',
     fontSize: '16px',
-    cursor: 'pointer',
-    transition: 'background 0.3s',
-  },
-  roleContainer: {
-    marginTop: '10px',
-  },
-  roleButton: {
-    margin: '5px',
-    padding: '8px 16px',
-    backgroundColor: '#28a745',
-    color: 'white',
-    border: 'none',
-    borderRadius: '5px',
     cursor: 'pointer',
     transition: 'background 0.3s',
   },
